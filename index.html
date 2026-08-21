@@ -1,63 +1,361 @@
-<html><head>
-<title></title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autonomous Cognitive Agent Flying Aircraft in X-Plane</title>
+<meta name="description" content="Senior Design project page for an autonomous cognitive agent flying aircraft in X-Plane.">
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --text: #1c2530;
+    --muted: #5b6b7c;
+    --border: #e1e6ec;
+    --accent: #2557a7;
+    --accent-dark: #1d4485;
+    --accent-soft: #eaf1fc;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(20, 30, 45, 0.08), 0 8px 24px rgba(20, 30, 45, 0.06);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+    color: #fff;
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+
+  header h1 {
+    margin: 0 auto;
+    max-width: 46rem;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  header p.tagline {
+    margin: 0.75rem 0 0;
+    color: #dce6f7;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  main {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  section {
+    margin-bottom: 2.5rem;
+  }
+
+  section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    color: var(--text);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 560px) {
+    .info-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .info-item {
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-grid .info-item:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+
+  @media (max-width: 559px) {
+    .info-item { border-bottom: 1px solid var(--border); }
+    .info-item:last-child { border-bottom: none; }
+  }
+
+  .info-item .label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .info-item .value {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .info-item .value a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .info-item .value a:hover { text-decoration: underline; }
+
+  .milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .milestone {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    padding: 1rem 1.4rem;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .milestone {
+      grid-template-columns: 13rem 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .milestone + .milestone {
+    border-top: 1px solid var(--border);
+  }
+
+  .milestone .name {
+    font-weight: 600;
+  }
+
+  .milestone .name .date {
+    display: block;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+
+  .deliverables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .deliverables a {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .deliverables a:hover {
+    background: #fff;
+    border-color: var(--accent);
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 0 1.5rem 3rem;
+  }
+
+  .tabs input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .tab-list {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .tab-list label {
+    flex: 1;
+    text-align: center;
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab-list label:hover {
+    border-color: var(--accent);
+    color: var(--accent-dark);
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  #tab-s1:checked ~ .tab-list label[for="tab-s1"],
+  #tab-s2:checked ~ .tab-list label[for="tab-s2"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  #tab-s1:checked ~ #panel-s1,
+  #tab-s2:checked ~ #panel-s2 {
+    display: block;
+  }
+</style>
 </head>
-
 <body>
-<h1>Autonomous Cognitive Agent Flying Aircraft in Xplane</h1>
-</li></ul>
-<p>
-</p><hr>
-<p>
-</p><center>
-      <table border="1"><tbody>
-	<tr align="center">
-          <td>Project Name</td>
-          <td>Autonomous Cognitive Agent Flying Aircraft in Xplane</td>
-	</tr><tr align="center">
-          <td>Team Members and Email Addresses</td>
-          <td>Zachary Reese (zreese2023@my.fit.edu)</td>
-	</tr><tr align="center">
-          <td>Faculty Advisor</td>
-          <td>Dr. Bhattacharyya, sbhattacharyya@fit.edu</td></tr>
-      </tbody></table>
-</center>
-<p>
-</p><center>
-<h3>First Semester</h3>
-      <table border="1"><tbody>
-	<tr align="center">
-          <td>Plan (Aug 31)</td>
-          <td><a href="">Plan</a>, <a href="">Presentation</a></td>
-	</tr><tr align="center">
-          <td>Milestone 1 (Sep 28)</td>
-          <td><a href="">Requirement</a>, <a href="">Design</a>, <a href="">Test</a>, <a href="">Presentation</a>, <a href="">Progress Evaluation</a></td>
-	</tr><tr align="center">
-          <td>Milestone 2 (Oct 26)</td>
-          <td><a href="">Presentation</a>, <a href="">Progress Evaluation</a></td></tr>
-	<tr align="center">
-          <td>Milestone 3 (Nov 23)</td>
-          <td><a href="">Presentation</a>, <a href="">Progress Evaluation</a></td></tr>
-      </tbody></table>
-</center>
 
-<center>
+<header>
+  <h1>Autonomous Cognitive Agent Flying Aircraft in X-Plane</h1>
+  <p class="tagline">Senior Design Project</p>
+</header>
 
-<h3>Second Semester</h3>
+<main>
 
-      <table border="1"><tbody>
-	<tr align="center">
-          <td>Plan (Aug 31)</td>
-          <td><a href="">Plan</a>, <a href="">Presentation</a></td>
-	</tr><tr align="center">
-          <td>Milestone 4 (Sep 28)</td>
-          <td><a href="">Presentation</a>, <a href="">Progress Evaluation</a></td>
-	</tr><tr align="center">
-          <td>Milestone 5 (Oct 26)</td>
-          <td><a href="">Poster</a>, <a href="">Presentation</a>, <a href="">Progress Evaluation</a></td></tr>
-	<tr align="center">
-          <td>Milestone 6 (Nov 23)</td>
-          <td><a href="">User and/or Developer Manual</a>, <a href="">Demo Video</a>, <a href="">Presentation</a>, <a href="">Progress Evaluation</a></td></tr>
-      </tbody></table>
-</center>
+  <section aria-labelledby="overview-heading">
+    <h2 id="overview-heading">Project Overview</h2>
+    <div class="card info-grid">
+      <div class="info-item">
+        <span class="label">Project Name</span>
+        <span class="value">Autonomous Cognitive Agent Flying Aircraft in X-Plane</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Team Members</span>
+        <span class="value"><a href="mailto:zreese2023@my.fit.edu">Zachary Reese,</a></span>
+        <span class="value"><a href="mailto:dostolaza2024@my.fit.edu">Dylan Ostolaza,</a></span>
+        <span class="value"><a href="mailto:amackey2023@my.fit.edu">Avery Mackey,</a></span>
+        <span class="value"><a href="mailto:bmarshall2022@my.fit.edu">Brianna Marshall</a></span>
+      </div>
+      <div class="info-item">
+        <span class="label">Faculty Advisor</span>
+        <span class="value"><a href="mailto:sbhattacharyya@fit.edu">Dr. Bhattacharyya</a></span>
+      </div>
+    </div>
+  </section>
 
-</body></html>
+  <section class="tabs" aria-label="Semester milestones">
+    <input type="radio" name="semester" id="tab-s1" checked>
+    <input type="radio" name="semester" id="tab-s2">
+
+    <div class="tab-list" role="tablist">
+      <label for="tab-s1">First Semester</label>
+      <label for="tab-s2">Second Semester</label>
+    </div>
+
+    <div class="tab-panel" id="panel-s1">
+      <div class="card milestones">
+        <div class="milestone">
+          <div class="name">Plan<span class="date">Aug 31</span></div>
+          <div class="deliverables">
+            <a href="#">Plan</a>
+            <a href="#">Presentation</a>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="name">Milestone 1<span class="date">Sep 28</span></div>
+          <div class="deliverables">
+            <a href="#">Requirement</a>
+            <a href="#">Design</a>
+            <a href="#">Test</a>
+            <a href="#">Presentation</a>
+            <a href="#">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="name">Milestone 2<span class="date">Oct 26</span></div>
+          <div class="deliverables">
+            <a href="#">Presentation</a>
+            <a href="#">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="name">Milestone 3<span class="date">Nov 23</span></div>
+          <div class="deliverables">
+            <a href="#">Presentation</a>
+            <a href="#">Progress Evaluation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-s2">
+      <div class="card milestones">
+        <div class="milestone">
+          <div class="name">Plan<span class="date">TBD</span></div>
+          <div class="deliverables">
+            <a href="#">Plan</a>
+            <a href="#">Presentation</a>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="name">Milestone 4<span class="date">TBD</span></div>
+          <div class="deliverables">
+            <a href="#">Presentation</a>
+            <a href="#">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="name">Milestone 5<span class="date">TBD</span></div>
+          <div class="deliverables">
+            <a href="#">Poster</a>
+            <a href="#">Presentation</a>
+            <a href="#">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="name">Milestone 6<span class="date">TBD</span></div>
+          <div class="deliverables">
+            <a href="#">User and/or Developer Manual</a>
+            <a href="#">Demo Video</a>
+            <a href="#">Presentation</a>
+            <a href="#">Progress Evaluation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Florida Institute of Technology &mdash; Senior Design
+</footer>
+
+</body>
+</html>
